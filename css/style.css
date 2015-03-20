@@ -1,0 +1,77 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 10px;
+}
+
+line.pivot {
+    stroke: 'pink';
+    opacity: 1;
+}
+
+h1, h2 {
+    font-weight: normal;
+}
+
+svg {
+    float: left;
+}
+
+h2.sorting-title {
+    float: left;
+    margin: 0.5em 0 0 1em;
+    padding: 0;
+}
+
+a {
+    color: steelblue;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+section {
+    clear: left;
+}
+
+#wrap, #comments, #control {
+    height: 500px;
+    padding: 80px 0 0 40px;
+    width: 800px;
+    margin: 0 auto;
+}
+
+#comments, #control {
+    padding: 20px;
+    height: 100px;
+}
+
+#sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 600px;
+}
+
+#sortable li {
+    margin: 1px 1px 1px 0;
+    padding: 1px;
+    float: left;
+    width: 25px;
+    height: 25px;
+    font-size: 1.4em;
+    text-align: center;
+    cursor: pointer;
+}
+
+.textfield {
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    outline: none;
+    cursor: text;
+    padding: 0px !important;
+}

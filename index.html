@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <title></title>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="js/colorbrewer.js"></script>
+    <script src="js/bubble.js"></script>
+    <script src="js/comments.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+<div id="wrap">
+    <section id="intro">
+        <h1>Анимированная сортировка пузырьком</h1>
+        <ul id="introtext">
+            <li>Демонстрация сортировки массива чисел пузырьковым методом</li>
+            <li>Числа выбираются случайным образом.</li>
+            <li>Вы можете поменять числа нажав на любое из них.</li>
+            <li>Для демонстрации допустимые значения от 0 до 99.</li>
+        </ul>
+    </section>
+    <section id="digits">
+        <ul id="sortable"></ul>
+    </section>
+    <section id="bubble">
+    </section>
+    <section id="comments">
+        <span id="comment"></span>
+    </section>
+    <section id="control">
+        <button id="start" onclick="startAnimation();">Запустить сортировку</button>
+        <button id="stop" onclick="startAnimation();">Остановить сортировку</button>
+    </section>
+</div>
+</body>
+</html>
