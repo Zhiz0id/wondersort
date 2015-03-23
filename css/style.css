@@ -47,6 +47,9 @@ section {
 #comments, #control {
     padding: 20px;
     height: 100px;
+    width: 440px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #sortable {
