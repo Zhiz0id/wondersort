@@ -37,7 +37,8 @@ var SortingAnimation = function() {
             return a - b;
         }
     );
-
+    //using min/max value finding step in our data
+    //using metric we can choose color/line size
     var metric = (digits[digits.length - 1] - digits[0]) / n;
 
     var x = d3.scale.ordinal().domain(index).rangePoints([0, width]),
@@ -45,7 +46,7 @@ var SortingAnimation = function() {
 
     var colorRandomName = Object.keys(colorbrewer)[Math.floor(Math.random()*Object.keys(colorbrewer).length)];
     var color = d3.scale.quantize().domain([height / 10, height]).range(colorbrewer[colorRandomName][9]);
-    var srcData = shuffle(index.slice());
+    var srcData = shuffle(digits.slice());
 
     // digits, index, srcData public variables
     ret.digits = digits;
@@ -55,7 +56,6 @@ var SortingAnimation = function() {
     var allActions = [];
     var lines = [];
     var infos = [];
-    //var labels = [];
     // animationInProcess and done are public variables for state check
     ret.animationInProcess = false;
     ret.done = false;
@@ -70,9 +70,7 @@ var SortingAnimation = function() {
                         var action = allActions[i].actions.pop();
                         var line = lines[i];
                         var info = infos[i];
-                        //var label = labels[i];
-
-                        if (action) addComment(action.type, digits[action.a], digits[action.b]);
+                        if (action) addComment(action.type, action.a, action.b);
 
                         if (action) switch (action.type) {
                             case "partition":
@@ -96,32 +94,24 @@ var SortingAnimation = function() {
                                     return "translate(" + x(i) + ")";
                                 });
                                 line.style("stroke", function(d, i) {
-                                    return color(a(d));
+                                    return color(a(Math.floor(d/metric)));
                                 });
 
                                 info.style("opacity", function(d, i) {
                                     return i == action.i || i == action.j ? 1 : 0;
                                 });
                                 info.style("stroke", function(d, i) {
-                                    return color(a(d));
+                                    return color(a(i));
                                 });
-
-                                //var t = label[0][action.i];
-                                //label[0][action.i] = label[0][action.j];
-                                //label[0][action.j] = t;
 
                                 // swap digits in ul/li fields
                                 var from = $("#s" + (action.i+1));
                                 var fromText = from.text();
                                 var to = $("#s" + (action.i+2));
                                 var toText = to.text();
+                                to.text(fromText).effect( "bounce", "slow" );
+                                from.text(toText).effect( "bounce", "slow" );
 
-                                to.text(fromText).effect( "bounce", "slow" );;
-                                from.text(toText).effect( "bounce", "slow" );;
-
-                                //label.attr("transform", function(d, i) {
-                                //    return "rotate(90) translate(0 " + -x(i) + ")";
-                                //});
                                 break;
                             }
                             case "shuffle":
@@ -136,12 +126,6 @@ var SortingAnimation = function() {
                                     return color(a(d));
                                 });
 
-/*                                var t = label[0][action.i];
-                                label[0][action.i] = label[0][action.j];
-                                label[0][action.j] = t;
-                                label.attr("transform", function(d, i) {
-                                    return "rotate(90) translate(0 " + -x(i) + ")";
-                                });*/
                                 break;
                             }
                             case "miss":
@@ -180,7 +164,11 @@ var SortingAnimation = function() {
     };
 
     ret.prepareAnimation = function(sortingfunction, target) {
+        //clean actions data on graphic update(changes some letter etc)
+        allActions = [];
+        //remove graphic on update data(rerun this function)
         $(target + " svg").remove();
+
         var data = srcData.slice();
         var svg = d3.select(target).append("svg").attr("width", width + margin.left + margin.right);
         svg = svg.attr("height", height + margin.top + margin.bottom).append("g");
@@ -190,12 +178,12 @@ var SortingAnimation = function() {
         // line is line on sorting graphic
         var line = svg.selectAll("line").data(data).enter().append("line").attr("index", function(d, i) {
             return "i" + i;
-        }).style("stroke", function(d) {
-            return color(a(d));
+        }).style("stroke", function(d, i) {
+            return color(a(Math.floor(d/metric)));
         }).attr("x2", function(d) {
             return 0;
         }).attr("y2", function(d, i) {
-            return -a(Math.floor(digits[d]/metric));
+            return -a(Math.floor(d/metric));
         }).attr("y1", function(d) {
             return 0;
         }).style("stroke-width", function(d) {
@@ -221,28 +209,13 @@ var SortingAnimation = function() {
         }).attr("transform", function(d, i) {
 
             // adds digits to li fields
-            $("#s" + (i+1)).text(digits[d]);
+            $("#s" + (i+1)).text(d);
 
             return "translate(" + x(i) + ")";
         }).style("stroke-width", function(d) {
             return width / n;
         });
 
-
-        // label - digits under lines
-        //var label = svg.selectAll("digits").data(data).enter().append("svg:g").attr("width", function(d) {
-        //    return width / n;
-        //}).append("svg:text").attr("x", function(d){
-        //    return -15;
-        //}).attr("y", function(d){
-        //    return 0;
-        //}).attr("transform", function(d, i){
-        //    return "rotate(90) translate(0 " + -x(i) + ")";
-        //}).text(function(d, i){
-        //    // set digits to ui/li fields
-        //    $("#s" + (i+1)).text(digits[d]);
-        //    return ''; //digits[d];
-        //});
 
         // sort the list, then reverse the stack of operations so we can animate chronologically from the start
         var actions = sortingfunction(data).reverse();
@@ -254,7 +227,6 @@ var SortingAnimation = function() {
 
         lines.push(line);
         infos.push(info);
-        //labels.push(label);
     };
 
     return ret;

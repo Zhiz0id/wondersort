@@ -19,7 +19,7 @@ function addComment(){
         "swap": "Меняем местами "+ this.a + " и " + this.b,
         "shuffle": "shuffle",
         "miss": "miss",
-        "traverse": "Сравниваем",
+        "traverse": "Сравниваем " + this.a + " и " + this.b + ". Больше " + this.b + ". Идём дальше." ,
         "done": "Сортировка выполнена!"
 
     };

@@ -44,7 +44,7 @@ $(function(){
         if( /^(\d|\d\d)$/.test($(this).val())) {
             $(this).hide().siblings(".display").show().text($(this).val());
             var idx = parseInt($(this).attr('idx')) - 1;
-            SortingAnimation.digits[SortingAnimation.index[SortingAnimation.srcData[idx]]] = parseInt($(this).val());
+            SortingAnimation.srcData[idx] = parseInt($(this).val());
             SortingAnimation.prepareAnimation(bubble, "#bubble");
         } else {
             $(this).hide().siblings(".display").show();

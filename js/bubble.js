@@ -22,7 +22,7 @@ function bubble(array) {
                     swap(i - 1, i);
                     swaped = true;
                 } else {
-                    actions.push({type: "traverse", "traverse": i});
+                    actions.push({type: "traverse", "traverse": i, a: array[i - 1], b: array[i]});
                 }
             }
         } while (swaped);
